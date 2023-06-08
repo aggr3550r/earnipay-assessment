@@ -9,6 +9,8 @@ import {
 } from '@nestjs/graphql';
 import { Task } from './task';
 import { TaskService } from './task.service';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../../guards/auth/auth.guard';
 
 @InputType()
 export class CreateTaskInput {
@@ -35,6 +37,7 @@ export class UpdateTaskInput {
 }
 
 @Resolver(() => Task)
+@UseGuards(AuthGuard)
 export class TaskResolver {
   constructor(private readonly taskService: TaskService) {}
 

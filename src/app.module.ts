@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -9,6 +9,7 @@ import { PrismaService } from './services/prisma/prisma.service';
 import { TaskResolver } from './modules/task/task.resolver';
 import { TaskService } from './modules/task/task.service';
 import { UserService } from './modules/user/user.service';
+import { CurrentUserMiddleware } from './middlewares/current-user.middleware';
 
 @Module({
   imports: [
@@ -29,4 +30,8 @@ import { UserService } from './modules/user/user.service';
     UserService,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CurrentUserMiddleware).forRoutes('*');
+  }
+}

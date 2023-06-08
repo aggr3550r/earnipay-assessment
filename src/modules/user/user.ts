@@ -1,13 +1,11 @@
 import 'reflect-metadata';
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { IsEmail } from 'class-validator';
+import { ObjectType, Field } from '@nestjs/graphql';
 import { Task } from '../task/task';
 import { BaseType } from '../../BaseType';
 
 @ObjectType({ description: 'User model' })
 export class User extends BaseType {
   @Field()
-  @IsEmail()
   email: string;
 
   @Field()

@@ -8,7 +8,7 @@ import { PrismaService } from '../../services/prisma/prisma.service';
 import { Task } from '@prisma/client';
 import { ITaskService } from '../../interfaces/ITaskService';
 import { CreateTaskDTO } from './dtos/create-task.dto';
-import { IsEmpty, IsNull } from '../../helpers/common.util';
+import { IsEmpty, IsNull } from '../../utils/common.util';
 import { UpdateTaskDTO } from './dtos/update-task.dto';
 import { PageOptionsDTO } from '../../paging/page-option.dto';
 import { PageMetaDTO } from '../../paging/page-meta.dto';

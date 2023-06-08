@@ -10,3 +10,7 @@ export const IsEmpty = (data: string | Array<unknown>) => {
 export const IsNull = (data: any) => {
   return data === null || data === undefined;
 };
+
+export const IsNotNull = (data: any) => {
+  return !IsNull(data);
+};
