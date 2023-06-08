@@ -1,0 +1,54 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""User model"""
+type User {
+  id: Int!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  email: String!
+  password: String!
+  name: String
+  tasks: [Task]!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+"""Task model"""
+type Task {
+  id: Int!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  title: String!
+  description: String
+  completed: Boolean
+  owner: User
+}
+
+type Query {
+  taskById(id: Int!): Task!
+  tasksByUserId(userId: Int!, page: Float!, pageSize: Float!): [Task!]!
+  filterTasks(userId: Int!, filter: String!, page: Float!, pageSize: Float!): [Task!]!
+}
+
+type Mutation {
+  createTask(userId: Float!, data: CreateTaskInput!): Task!
+  updateTask(id: Float!, data: UpdateTaskInput!): Task!
+  deleteTask(id: Float!): Task!
+}
+
+input CreateTaskInput {
+  title: String!
+  description: String
+  completed: Boolean! = false
+}
+
+input UpdateTaskInput {
+  title: String
+  description: String
+  completed: Boolean
+}
