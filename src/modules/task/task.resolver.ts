@@ -6,6 +6,7 @@ import {
   Mutation,
   Resolver,
   Query,
+  ObjectType,
 } from '@nestjs/graphql';
 import { Task } from './task';
 import { TaskService } from './task.service';
@@ -13,6 +14,8 @@ import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../guards/auth/auth.guard';
 import { CurrentUser } from '../../decorators/current-user.decorator';
 import { User } from '@prisma/client';
+import ModelledResponse from '../../creators/model-class-creator';
+import PagingatedResponse from '../../creators/paging-class-creator';
 
 @InputType()
 export class CreateTaskInput {
@@ -25,6 +28,12 @@ export class CreateTaskInput {
   @Field({ defaultValue: false })
   completed: boolean;
 }
+
+@ObjectType()
+export class ResponseModel<Task> extends ModelledResponse(Task) {}
+
+@ObjectType()
+export class PageDTO<Task> extends PagingatedResponse(Task) {}
 
 @InputType()
 export class UpdateTaskInput {
@@ -47,58 +56,55 @@ export class TaskResolver {
   async createTask(
     @CurrentUser() user: User,
     @Args('data') data: CreateTaskInput,
-  ): Promise<Task> {
+  ): Promise<ResponseModel<Task>> {
     const { id: userId } = user;
-    return this.taskService.createTask(userId, data);
+    return await this.taskService.createTask(userId, data);
   }
 
-  @Query(() => Task)
-  async taskById(@Args('id', { type: () => Int }) id: number): Promise<Task> {
-    return this.taskService.getTaskById(id);
+  @Query(() => ResponseModel<Task>)
+  async taskById(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<ResponseModel<Task>> {
+    return await this.taskService.getTaskById(id);
   }
 
-  @Query(() => [Task])
+  @Query(() => ResponseModel<PageDTO<Task>>)
   async tasksByUserId(
     @CurrentUser() user: User,
     @Args('page') page: number,
     @Args('pageSize') pageSize: number,
-  ): Promise<Task[]> {
+  ) {
     const pageOptionsDTO = { skip: (page - 1) * pageSize, take: pageSize };
     const { id: userId } = user;
-    const pageDTO = await this.taskService.getTasksByUserId(
-      userId,
-      pageOptionsDTO,
-    );
-    return pageDTO.data;
+    return await this.taskService.getTasksByUserId(userId, pageOptionsDTO);
   }
 
-  @Query(() => [Task])
+  @Query(() => ResponseModel<PageDTO<Task>>)
   async filterTasks(
     @CurrentUser() user: User,
     @Args('filter') filter: string,
     @Args('page') page: number,
     @Args('pageSize') pageSize: number,
-  ): Promise<Task[]> {
+  ) {
     const filterTaskDTO = {
       search_term: filter,
       skip: (page - 1) * pageSize,
       take: pageSize,
     };
     const { id: userId } = user;
-    const pageDTO = await this.taskService.filterTasks(userId, filterTaskDTO);
-    return pageDTO.data;
+    return await this.taskService.filterTasks(userId, filterTaskDTO);
   }
 
-  @Mutation(() => Task)
+  @Mutation(() => ResponseModel<Task>)
   async updateTask(
     @Args('id') id: number,
     @Args('data') data: UpdateTaskInput,
-  ): Promise<Task> {
-    return this.taskService.updateTask(id, data);
+  ): Promise<ResponseModel<Task>> {
+    return await this.taskService.updateTask(id, data);
   }
 
   @Mutation(() => Task)
   async deleteTask(@Args('id') id: number): Promise<Task> {
-    return this.taskService.deleteTask(id);
+    return await this.taskService.deleteTask(id);
   }
 }

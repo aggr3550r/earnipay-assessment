@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -32,6 +32,18 @@ import { CurrentUserMiddleware } from './middlewares/current-user.middleware';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CurrentUserMiddleware).forRoutes('*');
+    consumer
+      .apply(CurrentUserMiddleware)
+      .exclude(
+        {
+          path: 'graphql',
+          method: RequestMethod.ALL,
+        },
+        {
+          path: 'createUser',
+          method: RequestMethod.ALL,
+        },
+      )
+      .forRoutes('*');
   }
 }

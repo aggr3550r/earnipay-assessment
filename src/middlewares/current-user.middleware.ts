@@ -1,11 +1,6 @@
-import {
-  Injectable,
-  NestMiddleware,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { UserService } from '../modules/user/user.service';
-import SecurityUtil from '../utils/security.util';
 import { User } from '@prisma/client';
 
 declare global {
@@ -26,6 +21,9 @@ declare global {
  * So this middleware will only serve the purpose of availing the authenticated user object to the requests that are in session.
  *
  * For the purpose of actually protecting the routes that need protection, we will use guards.
+ *
+ *
+ * Edit: The core functionality for this code has been moved to into the AuthGuard. This is because it only makes sense to have auth functionality in there since a middleware must be applied globally and we do not need global auth. The AuthGuard will authenticate and specifically so for the TaskResolver
  */
 
 @Injectable()
@@ -50,24 +48,24 @@ export class CurrentUserMiddleware implements NestMiddleware {
     // }
 
     // 2) Verify token
-    const decoded = await SecurityUtil.verifyTokenWithSecret(
-      token,
-      process.env.JWT_SECRET,
-    );
+    // const decoded = await SecurityUtil.verifyTokenWithSecret(
+    //   token,
+    //   process.env.JWT_SECRET,
+    // );
 
-    // console.log(decoded);
+    // // console.log(decoded);
 
-    const person = await this.userService.findUserById(decoded['id']);
+    // const person = await this.userService.findUserById(decoded['id']);
 
-    // if (!person) throw new JWTException();
+    // // if (!person) throw new JWTException();
 
-    console.info('currently logged in user', person);
+    // console.info('currently logged in user', person);
 
-    // GRANT ACCESS TO PROTECTED ROUTE
-    req.currentUser = person;
-    req.user = person;
-    res.locals.user = person;
-    res.locals.currentUser = person;
+    // // GRANT ACCESS TO PROTECTED ROUTE
+    // req.currentUser = person;
+    // req.user = person;
+    // res.locals.user = person;
+    // res.locals.currentUser = person;
 
     next();
   }

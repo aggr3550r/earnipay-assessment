@@ -75,7 +75,7 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
 
     console.log('actual message', message);
 
-    response.status(status ?? HttpStatus.INTERNAL_SERVER_ERROR).json({
+    response?.status(status ?? HttpStatus.INTERNAL_SERVER_ERROR).json({
       statusCode: EarnipayResponseStatus.FAILED,
       message: message ?? 'Operation Failed',
       data: data ?? null,

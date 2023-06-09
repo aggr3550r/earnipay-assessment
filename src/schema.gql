@@ -29,15 +29,21 @@ type Task {
   owner: User
 }
 
+type ResponseModel {
+  statusCode: String!
+  message: String!
+  data: Task!
+}
+
 type Query {
-  taskById(id: Int!): Task!
-  tasksByUserId(page: Float!, pageSize: Float!): [Task!]!
-  filterTasks(filter: String!, page: Float!, pageSize: Float!): [Task!]!
+  taskById(id: Int!): ResponseModel!
+  tasksByUserId(page: Float!, pageSize: Float!): ResponseModel!
+  filterTasks(filter: String!, page: Float!, pageSize: Float!): ResponseModel!
 }
 
 type Mutation {
   createTask(data: CreateTaskInput!): Task!
-  updateTask(id: Float!, data: UpdateTaskInput!): Task!
+  updateTask(id: Float!, data: UpdateTaskInput!): ResponseModel!
   deleteTask(id: Float!): Task!
 }
 

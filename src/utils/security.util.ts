@@ -31,13 +31,14 @@ export default class SecurityUtil {
   }
 
   static async verifyTokenWithSecret(token: any, secretKey: string) {
-    try {
-      const decoded = JWT.verify(token, secretKey);
-      return decoded;
-    } catch (error) {
-      console.error('verifyTokenWithSecret error()');
-      throw new JWTException(error.message.toString().toLocaleUpperCase());
-    }
+    const decoded = JWT.verify(token, secretKey);
+    return decoded;
+    // try {
+
+    // } catch (error) {
+    //   console.error('verifyTokenWithSecret error()');
+    //   // throw new JWTException(error.message.toString().toLocaleUpperCase());
+    // }
   }
 
   static async passwordIsCorrect(
