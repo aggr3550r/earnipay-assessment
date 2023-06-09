@@ -31,12 +31,12 @@ type Task {
 
 type Query {
   taskById(id: Int!): Task!
-  tasksByUserId(userId: Int!, page: Float!, pageSize: Float!): [Task!]!
-  filterTasks(userId: Int!, filter: String!, page: Float!, pageSize: Float!): [Task!]!
+  tasksByUserId(page: Float!, pageSize: Float!): [Task!]!
+  filterTasks(filter: String!, page: Float!, pageSize: Float!): [Task!]!
 }
 
 type Mutation {
-  createTask(userId: Float!, data: CreateTaskInput!): Task!
+  createTask(data: CreateTaskInput!): Task!
   updateTask(id: Float!, data: UpdateTaskInput!): Task!
   deleteTask(id: Float!): Task!
 }

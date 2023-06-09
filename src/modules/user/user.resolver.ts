@@ -1,50 +1,96 @@
-// import {
-//   Context,
-//   Field,
-//   InputType,
-//   ResolveField,
-//   Resolver,
-//   Root,
-// } from '@nestjs/graphql';
-// import { TaskCreateInput } from '../task/task.resolver';
-// import { User } from './user';
-// import { Inject } from '@nestjs/common';
-// import { PrismaService } from '../../services/prisma/prisma.service';
-// import { Task } from '../task/task';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  Query,
+  InputType,
+  Field,
+} from '@nestjs/graphql';
+import { UserService } from './user.service';
+import { User } from './user';
+import { AuthService } from './auth/auth.service';
+import { ResponseModel } from '../../ResponseModel';
+import { IsNotNull } from '../../utils/common.util';
+import { Res } from '@nestjs/common';
+import { Response } from 'express';
 
-// @InputType()
-// class UserUniqueInput {
-//   @Field({ nullable: true })
-//   id: number;
+@InputType()
+export class CreateUserInput {
+  @Field()
+  email: string;
 
-//   @Field({ nullable: true })
-//   email: string;
-// }
+  @Field()
+  password: string;
 
-// @InputType()
-// class UserCreateInput {
-//   @Field()
-//   email: string;
+  @Field()
+  name?: string;
+}
 
-//   @Field({ nullable: true })
-//   name: string;
+@InputType()
+export class UpdateUserInput {
+  @Field()
+  name?: string;
 
-//   @Field((type) => [TaskCreateInput], { nullable: true })
-//   posts: [TaskCreateInput];
-// }
+  @Field()
+  email?: string;
+}
 
-// @Resolver(Task)
-// export class UserResolver {
-//   constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+@InputType()
+export class LoginUserInput {
+  @Field()
+  email: string;
 
-//   @ResolveField()
-//   async tasks(@Root() user: User, @Context() ctx): Promise<Task[]> {
-//     return this.prismaService.user
-//       .findUnique({
-//         where: {
-//           id: user.id,
-//         },
-//       })
-//       .tasks();
-//   }
-// }
+  @Field()
+  password: string;
+}
+
+@Resolver(() => User)
+export class UserResolver {
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
+
+  @Mutation(() => ResponseModel<User>)
+  async createUser(
+    @Args('data') data: CreateUserInput,
+  ): Promise<ResponseModel<User>> {
+    return await this.userService.createUser(data);
+  }
+
+  @Mutation(() => ResponseModel<User>)
+  async login(
+    @Args('data') data: LoginUserInput,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const loginResponse: ResponseModel<User> = await this.authService.login(
+      data,
+    );
+
+    if (IsNotNull(loginResponse.data)) {
+      this.authService.createAndSendAuthToken(loginResponse?.data, 200, res);
+    } else {
+      return new ResponseModel(400, loginResponse?.message, loginResponse);
+    }
+  }
+
+  @Query(() => User)
+  async findUserById(@Args('userId') userId: number): Promise<User> {
+    return await this.userService.findUserById(userId);
+  }
+
+  @Query(() => ResponseModel<User>)
+  async findUserByEmail(
+    @Args('email') email: string,
+  ): Promise<ResponseModel<User>> {
+    return await this.userService.findUserByEmail(email);
+  }
+
+  @Mutation(() => ResponseModel<User>)
+  async updateUser(
+    @Args('userId') userId: number,
+    @Args('data') data: UpdateUserInput,
+  ): Promise<ResponseModel<User>> {
+    return await this.userService.updateUser(userId, data);
+  }
+}

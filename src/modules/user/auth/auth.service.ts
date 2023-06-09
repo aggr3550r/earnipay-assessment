@@ -56,7 +56,9 @@ export class AuthService {
 
   async login(data: UserLoginDTO): Promise<ResponseModel<User>> {
     try {
-      const user = await this.userService.findUserByEmail(data.email);
+      const response = await this.userService.findUserByEmail(data.email);
+
+      const user = response.data;
 
       if (IsNull(user))
         throw new NotFoundException('Could not find a user with that email');

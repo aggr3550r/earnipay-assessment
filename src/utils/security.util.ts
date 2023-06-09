@@ -6,6 +6,11 @@ import { JWTException } from '../exceptions/JWTException';
 const scrypt = promisify(_scrypt);
 
 export default class SecurityUtil {
+  /**
+   *
+   * @param password
+   * @returns
+   */
   static async encryptPassword(password: string) {
     try {
       const salt = randomBytes(8).toString('hex');

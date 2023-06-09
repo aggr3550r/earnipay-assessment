@@ -11,6 +11,8 @@ import { Task } from './task';
 import { TaskService } from './task.service';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../guards/auth/auth.guard';
+import { CurrentUser } from '../../decorators/current-user.decorator';
+import { User } from '@prisma/client';
 
 @InputType()
 export class CreateTaskInput {
@@ -43,9 +45,10 @@ export class TaskResolver {
 
   @Mutation(() => Task)
   async createTask(
-    @Args('userId') userId: number,
+    @CurrentUser() user: User,
     @Args('data') data: CreateTaskInput,
   ): Promise<Task> {
+    const { id: userId } = user;
     return this.taskService.createTask(userId, data);
   }
 
@@ -56,11 +59,12 @@ export class TaskResolver {
 
   @Query(() => [Task])
   async tasksByUserId(
-    @Args('userId', { type: () => Int }) userId: number,
+    @CurrentUser() user: User,
     @Args('page') page: number,
     @Args('pageSize') pageSize: number,
   ): Promise<Task[]> {
     const pageOptionsDTO = { skip: (page - 1) * pageSize, take: pageSize };
+    const { id: userId } = user;
     const pageDTO = await this.taskService.getTasksByUserId(
       userId,
       pageOptionsDTO,
@@ -70,7 +74,7 @@ export class TaskResolver {
 
   @Query(() => [Task])
   async filterTasks(
-    @Args('userId', { type: () => Int }) userId: number,
+    @CurrentUser() user: User,
     @Args('filter') filter: string,
     @Args('page') page: number,
     @Args('pageSize') pageSize: number,
@@ -80,6 +84,7 @@ export class TaskResolver {
       skip: (page - 1) * pageSize,
       take: pageSize,
     };
+    const { id: userId } = user;
     const pageDTO = await this.taskService.filterTasks(userId, filterTaskDTO);
     return pageDTO.data;
   }
