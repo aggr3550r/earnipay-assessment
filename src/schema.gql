@@ -29,22 +29,33 @@ type Task {
   owner: User
 }
 
-type ResponseModel {
+type TaskResponse {
   statusCode: String!
   message: String!
   data: Task!
 }
 
+type UserResponse {
+  statusCode: String!
+  message: String!
+  data: User!
+}
+
 type Query {
-  taskById(id: Int!): ResponseModel!
-  tasksByUserId(page: Float!, pageSize: Float!): ResponseModel!
-  filterTasks(filter: String!, page: Float!, pageSize: Float!): ResponseModel!
+  taskById(id: Int!): TaskResponse!
+  tasksByUserId(page: Float!, pageSize: Float!): TaskResponse!
+  filterTasks(filter: String!, page: Float!, pageSize: Float!): TaskResponse!
+  findUserById(userId: Float!): User!
+  findUserByEmail(email: String!): UserResponse!
 }
 
 type Mutation {
-  createTask(data: CreateTaskInput!): Task!
-  updateTask(id: Float!, data: UpdateTaskInput!): ResponseModel!
+  createTask(data: CreateTaskInput!): TaskResponse!
+  updateTask(id: Float!, data: UpdateTaskInput!): TaskResponse!
   deleteTask(id: Float!): Task!
+  createUser(data: CreateUserInput!): UserResponse!
+  login(data: LoginUserInput!): UserResponse!
+  updateUser(userId: Float!, data: UpdateUserInput!): UserResponse!
 }
 
 input CreateTaskInput {
@@ -57,4 +68,20 @@ input UpdateTaskInput {
   title: String
   description: String
   completed: Boolean
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  name: String!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  name: String!
+  email: String!
 }

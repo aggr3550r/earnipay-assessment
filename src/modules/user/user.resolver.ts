@@ -5,44 +5,48 @@ import {
   Query,
   InputType,
   Field,
+  ObjectType,
 } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './user';
 import { AuthService } from './auth/auth.service';
-import { ResponseModel } from '../../ResponseModel';
 import { IsNotNull } from '../../utils/common.util';
 import { Res } from '@nestjs/common';
 import { Response } from 'express';
+import ModelledResponse from '../../creators/model-class-creator';
 
 @InputType()
 export class CreateUserInput {
-  @Field()
+  @Field(() => String)
   email: string;
 
-  @Field()
+  @Field(() => String)
   password: string;
 
-  @Field()
+  @Field(() => String)
   name?: string;
 }
 
 @InputType()
 export class UpdateUserInput {
-  @Field()
+  @Field(() => String)
   name?: string;
 
-  @Field()
+  @Field(() => String)
   email?: string;
 }
 
 @InputType()
 export class LoginUserInput {
-  @Field()
+  @Field(() => String)
   email: string;
 
-  @Field()
+  @Field(() => String)
   password: string;
 }
+
+@ObjectType()
+export class UserResponse<Task> extends ModelledResponse(User) {}
 
 @Resolver(() => User)
 export class UserResolver {
@@ -51,26 +55,26 @@ export class UserResolver {
     private readonly authService: AuthService,
   ) {}
 
-  @Mutation(() => ResponseModel<User>)
+  @Mutation(() => UserResponse<User>)
   async createUser(
     @Args('data') data: CreateUserInput,
-  ): Promise<ResponseModel<User>> {
+  ): Promise<UserResponse<User>> {
     return await this.userService.createUser(data);
   }
 
-  @Mutation(() => ResponseModel<User>)
+  @Mutation(() => UserResponse<User>)
   async login(
     @Args('data') data: LoginUserInput,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const loginResponse: ResponseModel<User> = await this.authService.login(
+    const loginResponse: UserResponse<User> = await this.authService.login(
       data,
     );
 
     if (IsNotNull(loginResponse.data)) {
       this.authService.createAndSendAuthToken(loginResponse?.data, 200, res);
     } else {
-      return new ResponseModel(400, loginResponse?.message, loginResponse);
+      return new UserResponse(400, loginResponse?.message, loginResponse?.data);
     }
   }
 
@@ -79,18 +83,18 @@ export class UserResolver {
     return await this.userService.findUserById(userId);
   }
 
-  @Query(() => ResponseModel<User>)
+  @Query(() => UserResponse<User>)
   async findUserByEmail(
     @Args('email') email: string,
-  ): Promise<ResponseModel<User>> {
+  ): Promise<UserResponse<User>> {
     return await this.userService.findUserByEmail(email);
   }
 
-  @Mutation(() => ResponseModel<User>)
+  @Mutation(() => UserResponse<User>)
   async updateUser(
     @Args('userId') userId: number,
     @Args('data') data: UpdateUserInput,
-  ): Promise<ResponseModel<User>> {
+  ): Promise<UserResponse<User>> {
     return await this.userService.updateUser(userId, data);
   }
 }

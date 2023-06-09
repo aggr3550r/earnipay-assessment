@@ -1,5 +1,4 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { ClassType } from 'type-graphql';
 
 /**

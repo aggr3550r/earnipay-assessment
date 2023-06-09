@@ -10,6 +10,8 @@ import { TaskResolver } from './modules/task/task.resolver';
 import { TaskService } from './modules/task/task.service';
 import { UserService } from './modules/user/user.service';
 import { CurrentUserMiddleware } from './middlewares/current-user.middleware';
+import { UserResolver } from './modules/user/user.resolver';
+import { AuthService } from './modules/user/auth/auth.service';
 
 @Module({
   imports: [
@@ -23,9 +25,11 @@ import { CurrentUserMiddleware } from './middlewares/current-user.middleware';
   ],
   controllers: [],
   providers: [
+    AuthService,
     AppService,
     PrismaService,
     TaskResolver,
+    UserResolver,
     TaskService,
     UserService,
   ],

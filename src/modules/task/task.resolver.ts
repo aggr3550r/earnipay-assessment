@@ -15,11 +15,11 @@ import { AuthGuard } from '../../guards/auth/auth.guard';
 import { CurrentUser } from '../../decorators/current-user.decorator';
 import { User } from '@prisma/client';
 import ModelledResponse from '../../creators/model-class-creator';
-import PagingatedResponse from '../../creators/paging-class-creator';
+import PaginatedResponse from '../../creators/paging-class-creator';
 
 @InputType()
 export class CreateTaskInput {
-  @Field()
+  @Field(() => String)
   title: string;
 
   @Field({ nullable: true })
@@ -30,10 +30,10 @@ export class CreateTaskInput {
 }
 
 @ObjectType()
-export class ResponseModel<Task> extends ModelledResponse(Task) {}
+export class TaskResponse<Task> extends ModelledResponse(Task) {}
 
 @ObjectType()
-export class PageDTO<Task> extends PagingatedResponse(Task) {}
+export class TaskPage<Task> extends PaginatedResponse(Task) {}
 
 @InputType()
 export class UpdateTaskInput {
@@ -52,23 +52,23 @@ export class UpdateTaskInput {
 export class TaskResolver {
   constructor(private readonly taskService: TaskService) {}
 
-  @Mutation(() => Task)
+  @Mutation(() => TaskResponse<Task>)
   async createTask(
     @CurrentUser() user: User,
     @Args('data') data: CreateTaskInput,
-  ): Promise<ResponseModel<Task>> {
+  ): Promise<TaskResponse<Task>> {
     const { id: userId } = user;
     return await this.taskService.createTask(userId, data);
   }
 
-  @Query(() => ResponseModel<Task>)
+  @Query(() => TaskResponse<Task>)
   async taskById(
     @Args('id', { type: () => Int }) id: number,
-  ): Promise<ResponseModel<Task>> {
+  ): Promise<TaskResponse<Task>> {
     return await this.taskService.getTaskById(id);
   }
 
-  @Query(() => ResponseModel<PageDTO<Task>>)
+  @Query(() => TaskResponse<TaskPage<Task>>)
   async tasksByUserId(
     @CurrentUser() user: User,
     @Args('page') page: number,
@@ -79,7 +79,7 @@ export class TaskResolver {
     return await this.taskService.getTasksByUserId(userId, pageOptionsDTO);
   }
 
-  @Query(() => ResponseModel<PageDTO<Task>>)
+  @Query(() => TaskResponse<TaskPage<Task>>)
   async filterTasks(
     @CurrentUser() user: User,
     @Args('filter') filter: string,
@@ -95,11 +95,11 @@ export class TaskResolver {
     return await this.taskService.filterTasks(userId, filterTaskDTO);
   }
 
-  @Mutation(() => ResponseModel<Task>)
+  @Mutation(() => TaskResponse<Task>)
   async updateTask(
     @Args('id') id: number,
     @Args('data') data: UpdateTaskInput,
-  ): Promise<ResponseModel<Task>> {
+  ): Promise<TaskResponse<Task>> {
     return await this.taskService.updateTask(id, data);
   }
 
