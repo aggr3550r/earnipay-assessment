@@ -5,7 +5,7 @@ export default function PaginatedResponse<T>(TClass: ClassType<T>) {
   // `isAbstract` decorator option is mandatory to prevent registering in schema
   @ObjectType({ isAbstract: true })
   abstract class PaginatedResponseClass {
-    @Field((type) => [TClass])
+    @Field((type) => [TClass], { nullable: true })
     data: T[];
 
     meta: any;

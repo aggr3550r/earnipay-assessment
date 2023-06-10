@@ -76,7 +76,7 @@ export class UserService implements IUserService {
 
       return new ResponseModel(
         EarnipayResponseStatus.FAILED,
-        EarnipayResponseMessage.FAILED,
+        error?.message || EarnipayResponseMessage.FAILED,
         null,
       );
     }

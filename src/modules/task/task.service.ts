@@ -152,7 +152,7 @@ export class TaskService implements ITaskService {
 
       return new ResponseModel(
         EarnipayResponseStatus.FAILED,
-        EarnipayResponseMessage.FAILED,
+        error?.message || EarnipayResponseMessage.FAILED,
         null,
       );
     }

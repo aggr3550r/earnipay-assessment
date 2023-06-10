@@ -18,7 +18,7 @@ export default function ModelledResponse<T>(TClass: ClassType<T>) {
     message: string;
 
     // here we use the runtime argument
-    @Field((type) => TClass)
+    @Field((type) => TClass, { nullable: true })
     // and here the generic type
     data: T;
 

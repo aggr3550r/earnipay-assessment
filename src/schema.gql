@@ -32,13 +32,13 @@ type Task {
 type TaskResponse {
   statusCode: String!
   message: String!
-  data: Task!
+  data: Task
 }
 
 type UserResponse {
   statusCode: String!
   message: String!
-  data: User!
+  data: User
 }
 
 type Query {
