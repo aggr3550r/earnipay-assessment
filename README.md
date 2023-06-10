@@ -37,8 +37,8 @@ JWT_COOKIE_EXPIRES_IN=24
 ```
 
 With that out of the way, there are two possible paths along which to proceed enumerated below:
-### - Docker Compose
-### - Dockerfile
+### * Docker Compose
+### * Dockerfile
 
 #### Docker Compose 
 To run the app using _docker compose_ take the following steps:
