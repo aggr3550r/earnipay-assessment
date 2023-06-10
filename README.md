@@ -35,8 +35,8 @@ $ npm install
 ## Running the app
 
 To run the app, there are two possible paths to take enumerated below:
-### Docker Compose
-### Dockerfile
+### - Docker Compose
+### - Dockerfile
 
 #### Docker Compose 
 To run the app using docker compose take the following steps:
