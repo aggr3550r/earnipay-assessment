@@ -12,6 +12,7 @@ services:
       - db
     networks:
       - app_network
+    restart: on-failure
 
   db:
     image: postgres:latest
@@ -20,9 +21,10 @@ services:
       POSTGRES_USER: victor
       POSTGRES_PASSWORD: killshot
       POSTGRES_DB: earnipay_datastore
-      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/datum
     networks:
       - app_network
 

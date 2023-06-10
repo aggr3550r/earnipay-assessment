@@ -65,7 +65,7 @@ export class UserResolver {
   @Mutation(() => UserResponse<User>)
   async login(
     @Args('data') data: LoginUserInput,
-    @Res({ passthrough: true }) res: Response,
+    @Res({ passthrough: true }) res: Partial<Response>,
   ) {
     const loginResponse: UserResponse<User> = await this.authService.login(
       data,

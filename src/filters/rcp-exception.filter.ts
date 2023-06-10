@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { GqlArgumentsHost, GqlExceptionFilter } from '@nestjs/graphql';
+import { GqlArgumentsHost } from '@nestjs/graphql';
 import { EarnipayResponseStatus } from '../enums/response.enum';
 
 @Catch()

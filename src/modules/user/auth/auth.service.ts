@@ -21,7 +21,11 @@ export class AuthService {
    * @param statusCode
    * @param res
    */
-  async createAndSendAuthToken(user: User, statusCode: number, res: Response) {
+  async createAndSendAuthToken(
+    user: User,
+    statusCode: number,
+    res: Partial<Response>,
+  ) {
     const token = await SecurityUtil.generateTokenWithSecretAndId(user.id);
 
     const cookieOptions = {
@@ -81,6 +85,11 @@ export class AuthService {
       }
     } catch (error) {
       console.error('login() error \n %o', error);
+      return new ResponseModel(
+        EarnipayResponseStatus.FAILED,
+        EarnipayResponseMessage.FAILED,
+        null,
+      );
     }
   }
 }

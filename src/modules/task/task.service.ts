@@ -44,7 +44,7 @@ export class TaskService implements ITaskService {
       console.error('createTask() error %o', error);
 
       return new ResponseModel(
-        error?.status || EarnipayResponseStatus.FAILED,
+        EarnipayResponseStatus.FAILED,
         error?.message || EarnipayResponseMessage.FAILED,
         null,
       );
@@ -81,7 +81,7 @@ export class TaskService implements ITaskService {
       console.error('getTasksByUserId() \n %o', error);
 
       return new ResponseModel(
-        error?.status || EarnipayResponseStatus.FAILED,
+        EarnipayResponseStatus.FAILED,
         error?.message || EarnipayResponseMessage.FAILED,
         null,
       );
@@ -106,7 +106,7 @@ export class TaskService implements ITaskService {
       console.error('getTaskById() error \n %o', error);
 
       return new ResponseModel(
-        error?.status || EarnipayResponseStatus.FAILED,
+        EarnipayResponseStatus.FAILED,
         error?.message || EarnipayResponseMessage.FAILED,
         null,
       );
@@ -139,7 +139,7 @@ export class TaskService implements ITaskService {
 
       const pageMetaDTO = new PageMetaDTO({
         page_options_dto: filterTaskDTO,
-        total_items: tasks.length,
+        total_items: tasks?.length,
       });
 
       return new ResponseModel(
@@ -151,8 +151,8 @@ export class TaskService implements ITaskService {
       console.error('filterTasks() error \n %o', error);
 
       return new ResponseModel(
-        error?.status || EarnipayResponseStatus.FAILED,
-        error?.message || EarnipayResponseMessage.FAILED,
+        EarnipayResponseStatus.FAILED,
+        EarnipayResponseMessage.FAILED,
         null,
       );
     }
@@ -182,7 +182,7 @@ export class TaskService implements ITaskService {
       console.error('updateTask() error \n %o', error);
 
       return new ResponseModel(
-        error?.status || EarnipayResponseStatus.FAILED,
+        EarnipayResponseStatus.FAILED,
         error?.message || EarnipayResponseMessage.FAILED,
         null,
       );

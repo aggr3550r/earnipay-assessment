@@ -23,7 +23,7 @@ declare global {
  * For the purpose of actually protecting the routes that need protection, we will use guards.
  *
  *
- * Edit: The core functionality for this code has been moved to into the AuthGuard. This is because it only makes sense to have auth functionality in there since a middleware must be applied globally and we do not need global auth. The AuthGuard will authenticate and specifically so for the TaskResolver
+ * Update: The core functionality for this code has been moved to into the AuthGuard. This is because it only makes sense to have auth functionality in there since a middleware must be applied globally and we do not need global auth. The AuthGuard will authenticate and specifically so for the TaskResolver
  */
 
 @Injectable()

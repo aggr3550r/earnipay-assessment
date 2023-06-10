@@ -37,8 +37,6 @@ export class AuthGuard implements CanActivate {
         // GRANT ACCESS TO PROTECTED ROUTE
         req.currentUser = person;
         req.user = person;
-        res.locals.user = person;
-        res.locals.currentUser = person;
       } catch (error) {
         console.error(error);
       }

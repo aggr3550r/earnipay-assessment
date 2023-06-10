@@ -38,7 +38,7 @@ export class UserService implements IUserService {
       console.error('createUser() error \n %o', error);
 
       return new ResponseModel(
-        error?.status || EarnipayResponseStatus.FAILED,
+        EarnipayResponseStatus.FAILED,
         error?.message || EarnipayResponseMessage.FAILED,
         null,
       );
@@ -63,7 +63,7 @@ export class UserService implements IUserService {
 
       if (IsNull(user))
         throw new NotFoundException(
-          'Could not find a user with that email address. Make sure you have entered a correct email address.',
+          'Could not find a user with that email address.',
         );
 
       return new ResponseModel(
@@ -75,8 +75,8 @@ export class UserService implements IUserService {
       console.error('findUserByEmail() error \n %o', error);
 
       return new ResponseModel(
-        error?.status || EarnipayResponseStatus.FAILED,
-        error?.message || EarnipayResponseMessage.FAILED,
+        EarnipayResponseStatus.FAILED,
+        EarnipayResponseMessage.FAILED,
         null,
       );
     }
@@ -101,7 +101,7 @@ export class UserService implements IUserService {
       console.error('updateUser() error \n %o', error);
 
       return new ResponseModel(
-        error?.status || EarnipayResponseStatus.FAILED,
+        EarnipayResponseStatus.FAILED,
         error?.message || EarnipayResponseMessage.FAILED,
         null,
       );
