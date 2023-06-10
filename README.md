@@ -90,7 +90,7 @@ To run the unit tests in the application use the following command:
 $ npm run test
 ```
 #### Note: 
-  If you are opting to use the Dockerfile provided to start the application on your end then you do not need to run the tests explicitly as it is already taken care of while the docker image is being built.
+  If you are opting to use the Dockerfile provided to run the application on your end then you do not need to run the tests explicitly as it is already taken care of while the docker image is being built.
 
 
 - Author - [Victor Uche](https://github.com/aggr3550r/)
