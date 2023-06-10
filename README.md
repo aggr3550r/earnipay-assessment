@@ -24,15 +24,31 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is a simple Todo application that is powered with NestS, GraphQL and Prisma - a combination of top choice modern technology. It is built in partial fulfilment of the interview requirements at Earnipay
 
-## Installation
+## Installations
 
 ```bash
 $ npm install
 ```
 
 ## Running the app
+
+To run the app, there are two possible paths to take enumerated below:
+# Docker Compose
+# Dockerfile
+
+# Docker Compose 
+To run the app using docker compose take the following steps:
+* Setup
+- Fire up Docker Desktop to make sure that the Docker daemon is up and running
+
+* Build docker image
+- Run the following command in the terminal from the root directory of the project. 
+```
+docker-compose --build
+```
+
 
 ```bash
 # development
