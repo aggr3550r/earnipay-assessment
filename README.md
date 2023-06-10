@@ -26,12 +26,6 @@
 
 This is a simple Todo application that is powered with NestS, GraphQL and Prisma - a combination of top choice modern technology. It is built in partial fulfilment of the interview requirements at Earnipay
 
-## Installations
-
-```bash
-$ npm install
-```
-
 ## Running the app
 
 In order to run the app, the first thing you need to do is create a .env file in the root of your project. The .env file should be like the one below
