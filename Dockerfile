@@ -21,6 +21,9 @@ RUN npm run build
 # Generate Prisma Client
 RUN npx prisma generate
 
+# Run unit tests
+RUN npm run test
+
 # Remove development dependencies (optional)
 # RUN npm prune --production
 
