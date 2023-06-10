@@ -79,7 +79,7 @@ To run the app using the Dockerfile provided, take the following steps:
  ```
  docker run -p 3000:3000 -v /Users/victor/Desktop/earnipay-assessment/.env:/app/.env earnipay-app
  ```
- 
+That should do it, your Todo API is up and ready for use @ http://localhost:3000/graphql ! 
 
 ## Test
 
