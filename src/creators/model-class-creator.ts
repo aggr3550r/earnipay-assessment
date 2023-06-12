@@ -20,7 +20,7 @@ export default function ModelledResponse<T>(TClass: ClassType<T>) {
     // here we use the runtime argument
     @Field((type) => TClass, { nullable: true })
     // and here the generic type
-    data: T;
+    data?: T;
 
     constructor(statusCode: string | number, message: string, data: T) {
       this.statusCode = statusCode;

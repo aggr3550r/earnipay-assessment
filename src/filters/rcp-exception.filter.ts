@@ -1,20 +1,20 @@
 import {
   ArgumentsHost,
   Catch,
+  ExceptionFilter,
   HttpException,
   HttpServer,
   HttpStatus,
   Logger,
 } from '@nestjs/common';
-import { BaseExceptionFilter } from '@nestjs/core';
-import { GqlArgumentsHost } from '@nestjs/graphql';
+import { BaseExceptionFilter, HttpAdapterHost } from '@nestjs/core';
+import { GqlArgumentsHost, GqlExceptionFilter } from '@nestjs/graphql';
 import { EarnipayResponseStatus } from '../enums/response.enum';
+import { Ctx } from 'type-graphql';
 
 @Catch()
-export class AllExceptionsFilter extends BaseExceptionFilter {
-  constructor(private readonly httpServer: HttpServer, private logger: Logger) {
-    super(httpServer);
-  }
+export class AllExceptionsFilter implements GqlExceptionFilter {
+  constructor() {}
 
   catch(exception: any, host: ArgumentsHost) {
     const gqlHost = GqlArgumentsHost.create(host);
@@ -23,7 +23,7 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
 
     let data;
 
-    this.logger.error(`:: Exception raised :: \n %o`, exception);
+    // this.logger.error(`:: Exception raised :: \n %o`, exception);
 
     let status = exception?.status ?? HttpStatus.INTERNAL_SERVER_ERROR;
     let message =
@@ -67,8 +67,8 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
     }
 
     if (exception.status === HttpStatus.UNPROCESSABLE_ENTITY) {
-      this.logger.log('422 exception');
-      this.logger.log(exception?.response?.message ?? exception?.message);
+      // this.logger.log('422 exception');
+      // this.logger.log(exception?.response?.message ?? exception?.message);
       data = exception?.response?.message ?? exception?.message;
       message = 'Operation could not be processed!';
     }

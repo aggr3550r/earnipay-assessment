@@ -12,6 +12,8 @@ import { UserService } from './modules/user/user.service';
 import { CurrentUserMiddleware } from './middlewares/current-user.middleware';
 import { UserResolver } from './modules/user/user.resolver';
 import { AuthService } from './modules/user/auth/auth.service';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './filters/rcp-exception.filter';
 
 @Module({
   imports: [

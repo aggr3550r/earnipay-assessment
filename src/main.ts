@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './filters/rcp-exception.filter';
 import {
@@ -11,9 +11,11 @@ import {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const httpRef = app.getHttpServer();
+  const httpRef = app.getHttpAdapter().getHttpServer();
 
-  app.useGlobalFilters(new AllExceptionsFilter(httpRef, new Logger()));
+  const logger = new Logger();
+
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({

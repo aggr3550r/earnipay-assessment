@@ -16,6 +16,7 @@ import { CurrentUser } from '../../decorators/current-user.decorator';
 import { User } from '@prisma/client';
 import ModelledResponse from '../../creators/model-class-creator';
 import PaginatedResponse from '../../creators/paging-class-creator';
+import { FilterTaskDTO } from './dtos/filter-tasks.dto';
 
 @InputType()
 export class CreateTaskInput {
@@ -86,7 +87,7 @@ export class TaskResolver {
     @Args('page') page: number,
     @Args('pageSize') pageSize: number,
   ) {
-    const filterTaskDTO = {
+    const filterTaskDTO: FilterTaskDTO = {
       search_term: filter,
       skip: (page - 1) * pageSize,
       take: pageSize,

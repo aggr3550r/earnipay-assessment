@@ -12,6 +12,7 @@ import {
   EarnipayResponseMessage,
   EarnipayResponseStatus,
 } from '../../enums/response.enum';
+import { GraphQLError } from 'graphql';
 
 @Injectable()
 export class UserService implements IUserService {
