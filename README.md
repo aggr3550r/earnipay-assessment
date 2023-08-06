@@ -26,6 +26,13 @@
 
 This is a simple Todo application that is powered with NestS, GraphQL and Prisma - a combination of top choice modern technology. It is built in partial fulfilment of the interview requirements at Earnipay
 
+## Functionalities
+
+The app is mostly a simple todo application that helps its users to manage their tasks in a simple and efficient manner. The aim of the project is not
+to max out on functionality but to demonstrate my approach to programming and implementing everyday requirements such as authentication, authorization, pagination, testing and containerization in smart and very wholesome ways.
+Users can sign up, log in, create and manage tasks within the app using a set of clean and intuitive APIs. To browse the APIs for more understanding 
+follow the steps below to run the app.
+
 ## Running the app
 
 In order to run the app, the first thing you need to do is create a .env file in the root of your project. The .env file should be like the one below
